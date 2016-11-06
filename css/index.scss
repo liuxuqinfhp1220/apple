@@ -1,0 +1,821 @@
+*{
+  margin:0;
+  padding:0;
+  list-style: none;
+  text-decoration: none;
+}
+//中小屏幕
+$m-size:1068px;
+$s-size:768px;
+@mixin onm{
+  @media screen and(max-width: $m-size) {
+    @content;
+  }
+}
+@mixin ons{
+  @media screen and(max-width: $s-size) {
+    @content;
+  }
+}
+//头部开始
+.header{
+  width:100%;
+  height:44px;
+  background:#303030;
+  @include ons{
+    background:#000;
+    height:48px;
+  }
+  .header-total{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 22px;
+    position:relative;
+    z-index:100;
+    .header-list{
+        margin:0 auto;
+        cursor:default;
+        width:auto;
+        margin:0 -10px;
+        height:44px;
+        text-align:justify;
+        @include ons{
+          display:none;
+        }
+      li{
+        display:inline-block;
+        position:relative;
+        height:44px;
+        z-index:1;
+        vertical-align: top;
+        a{
+          display:block;
+          padding:0 10px;
+          height:44px;
+          opacity: 1;
+          transition: opacity .8s ease, transform .8s ease;
+        }
+        &:hover{
+          opacity: 0.65;
+        }
+      }
+    }
+  }
+}
+.header-list::after{
+    content:'';
+    font-size:0;
+    display:inline-block;
+    width:100%;
+    height:0;
+    line-height:0;
+}
+.header .phone-list{
+  width:auto;
+  text-align: justify;
+  height:48px;
+  display:none;
+  @include ons{
+    display:block;
+  }
+  li{
+    display: inline-block;
+    height:100%;
+    a{
+      //text-align: center;
+      display:block;
+      height:48px;
+      font-size:40px;
+      color:#fff;
+      transition: opacity .8s ease .2s;
+      opacity: 1;
+    }
+    &:hover{
+     opacity: 0.5;
+    }
+  }
+}
+.phone-list::after{
+  display: inline-block;
+  content:'';
+  width:100%;
+  height:0;
+  font-size:0;
+}
+.header .phone-list li .menu {
+  position: absolute;
+  width: 48px;
+  display: none;
+  @include ons {
+    span {
+      position: absolute;
+      display: block;
+      width: 17px;
+      height: 1px;
+      background: #fff;
+      left: 16px;
+      transform: rotate(0deg);
+      transition: transform .4s ease;
+    }
+    .menu-top {
+      top: 23px;
+      transform-origin: 5px top;
+    }
+    .menu-bottom {
+      bottom: 19px;
+      transform-origin: 5px bottom;
+    }
+  }
+}
+$phone-list:"apple","suo";
+$pwid:40px,50px;
+@for $i from 1 through 2{
+  .phone-list .#{nth($phone-list,$i)}{
+    width:nth($pwid,$i);
+  }
+}
+  @include ons{
+    @each $i in $phone-list{
+    .phone-list .#{$i}{
+      background:url("../img/" + $i +"_large.svg") center center no-repeat;
+    }
+  }
+}
+$wid:20px,31px,30px,48px,44px,20px,40px,57px,20px,18px;
+$header-list:"apple","mac","ipad","iphone","watch","tv","musi","support","search","suo";
+@for $i from 1 through length($header-list){
+  .header-list .#{nth($header-list,$i)}{
+      width:nth($wid,$i);
+  }
+}
+@each $i in $header-list{
+   .header-list .#{$i}{
+     background:url("../img/" + $i +"_large.svg") center center no-repeat;
+   }
+}
+.header .search-box{
+  width:682px;
+  height:44px;
+  position:absolute;
+  left:0;right:0;
+  margin:0 auto;
+  display:none;
+  transition: opacity .8s ease;
+  @include ons{
+    display:none;
+  }
+  .search-inner-box{
+    width:100%;
+    height:100%;
+  }
+  .card{
+    padding-top: 25px;
+    padding-left:40px;
+    width:100%;
+    height:200px;
+    background:#fff;
+    box-sizing: border-box;
+    opacity: 0;
+    @for $i from 1 through 5{
+      li{
+        transform: translate3d(850px,0,0);
+     &:nth-child(#{$i}){
+        padding:4px 0;
+        padding-left:15px;
+        box-sizing: border-box;
+        width:100%;
+        float:left;
+        height:30px;
+        transition: transform .8s ease ($i/2)*0.4s,opacity .8s ease;
+      a{
+        display:block;
+        width:100%;
+        height:30px;
+        line-height:30px;
+        color:#999;
+        font-size:14px;
+        &:hover{
+          color:#1D7BCB;
+        }
+      }
+      }
+    }
+    }
+  }
+}
+.header .search-box .card li:nth-child(1) a:hover{
+    color:#999;
+}
+.header.searching .header-list{
+    @for $i from 2 through 10{
+      li .#{nth($header-list,$i)}{
+        opacity: 0;
+        transform :scale(0,0);
+      }
+    }
+}
+.header.searching .search-box{
+  display:block;
+  @include ons{
+    display:none;
+  }
+  .card {
+    opacity: 1;
+  li{
+    transform: translate3d(0,0,0);
+  }
+  }
+}
+.header .close{
+  cursor:pointer;
+  position:absolute;
+  z-index:4;
+  right:12px;
+  top:0;
+  width:38px;
+  height:44px;
+  color:#fff;
+  display:none;
+  opacity: 1;
+  transition: opacity .8s ease;
+  span{
+    width:1px;
+    height:18px;
+    background:#fff;
+    position:absolute;
+    top:11px;
+    transform: rotate(0deg);
+  }
+  .close-left{
+    left:13px;
+    transition: transfrom .8s ease;
+    transform-origin:left bottom;
+  }
+  .close-right{
+    right:12px;
+    transition: transfrom .8s ease;
+    transform-origin:right bottom;
+  }
+}
+.header .close:hover{
+    opacity: 0.65;
+}
+.header.searching .close{
+  display:block;
+  .close-left{
+    transform: rotate(45deg);
+  }
+  .close-right{
+    transform:rotate(-45deg);
+  }
+}
+$menu-list:"Mac","Ipad","Iphone","Watch","Music","Support","Search";
+@each $i in $menu-list{
+  .header .menu-list li .#{$i}{
+    background:url("../img/" + $i +"_small.svg") left center no-repeat;
+  }
+}
+.header .menu-list{
+  display:none;
+  background:#000;
+  width:100%;
+  height:auto;
+  position:absolute;
+  left:0;
+  top:48px;
+  z-index:80;
+  margin:0 auto;
+  padding:0 48px 280px;
+  cursor:default;
+  box-sizing: border-box;
+  @for $i from 1 through 7{
+  li:nth-child(#{$i}){
+    transform: translate3d(100%,0,0);
+    transition: transform 0.8s ease ($i/2)*0.2s;
+    width:100%;
+    height:48px;
+    border-bottom:1px solid #333333;
+  }
+    a{
+      display: block;
+      width:auto;
+      height:100%;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+      color:#fff;
+      &:hover{
+        opacity:0.65;
+      }
+      span{
+        font-size:16px;
+        margin-left:28px;
+        cursor:text;
+        display:block;
+        line-height:48px;
+      }
+    }
+  }
+}
+ @include ons {
+   .header.Searching .phone-list li .menu {
+     .menu-top {
+       transform: rotate(45deg);
+     }
+     .menu-bottom {
+       transform: rotate(-45deg);
+     }
+   }
+   .header.Searching .menu-list {
+     display: block;
+     li {
+       transform: translate3d(0, 0, 0);
+     }
+   }
+ }
+  //头部结束
+  //banner开始
+  @keyframes enter {
+    0%{
+      transform: translate3d(-100%,0,0);
+    }
+    100%{
+      transform: translate3d(0,0,0);
+    }
+
+  }
+  .banner {
+    width:100%;
+    min-height:130px;
+    height:calc(100vh - 76px);
+    position: relative;
+    cursor:pointer;
+    overflow: hidden;
+    .banner-nav{
+      overflow: hidden;
+      width:100%;
+      height:100%;
+      position:relative;
+      a{
+        position:absolute;
+        left:0;
+        top:0;
+        z-index:1;
+        display:none;
+        width:100%;
+        height:100%;
+        float:left;
+        transform: translate3d(0,0,0);
+        transition: transform 1s ease;
+        text-align:center;
+        &.active{
+          z-index:4;
+          display:block;
+        }
+        &.right{
+          display:block;
+          z-index:4;
+          transform: translate3d(100%,0,0);
+        }
+        &.leave{
+          z-index:3;
+          display:block;
+          transform:translate3d(-300px,0,0);
+        }
+        &.enter{
+          z-index:3;
+          display:block;
+          animation:enter 1s ease both;
+        }
+        .nav{
+          width:100%;
+          position:absolute;
+          top:14%;
+          height:86%;
+          margin:0 auto;
+          z-index:200;
+          h1{
+            position:absolute;
+            left:50%;
+          }
+          h2{
+            width:100%;
+            margin:0 auto;
+            position:absolute;
+            left:50%;
+            top:8%;
+            color: #fff;
+            font-size: 34px;
+            font-weight:normal;
+            margin-left:-50%;
+          }
+        }
+      }
+      &::after{
+        content:'';
+        clear: both;
+        height:0;
+      }
+    }
+    .btn{
+      opacity: 0;
+      width:100%;
+      height:64px;
+      position:absolute;
+      top:50%;
+      margin:0 auto;
+      margin-top:-32px;
+      box-sizing: border-box;
+      padding:0 22px;
+      z-index:100;
+      div{
+        width:64px;
+        height:100%;
+        background:rgba(180,180,180,0.25);
+        color:#848484;
+        font-size:40px;
+        line-height:64px;
+        font-family: "黑体";
+        text-align: center;
+        border-radius:50%;
+      }
+      .btn-left{
+        float:left;
+      }
+      .btn-right{
+        float:right;
+      }
+    }
+    .banner-dot{
+      width:100%;
+      height:25px;
+      position:absolute;
+      bottom:20px;
+      margin:0 auto;
+      z-index:20;
+      text-align:center;
+      .dot{
+        display:inline-block;
+        li{
+          padding:10px 0;
+          margin-right:5px;
+          width:50px;
+          height:2px;
+          background:#ccc;
+          background-clip: content-box;
+          float:left;
+          cursor:pointer;
+          &.active{
+            background:#666;
+            background-clip: content-box;
+          }
+          a{
+            display:block;
+            width:0;
+            height:2px;
+            background:#666;
+            &.show{
+              width:50px;
+            }
+            &.show.auto{
+              transition: width 1s linear;
+              width:50px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .banner .banner-nav .nav .logo_iphone{
+    width:95px;
+    height:24px;
+    background:url(../img/logo_iphone_large.png) center center no-repeat;
+    margin-left:-47.5px;
+  }
+  .banner .banner-nav .nav .logo_watch{
+    width:148px;
+    height:56px;
+    margin-left: -74px;
+    background:url(../img/logo_watch_large.png) center center no-repeat;
+  }
+  .banner .banner-nav .nav .logo_airpods{
+    width:108px;
+    height:23px;
+    margin-left: -54px;
+    background:url(../img/logo_airpods_large.png) center center no-repeat;
+  }
+  .banner .banner-nav .nav .logo_event{
+    width:283px;
+    height:30px;
+    margin-left: -141.5px;
+    background:url(../img/logo_event_large.png) center center no-repeat;
+  }
+  .banner .banner-nav .nav h2.series{
+    top:78%;
+  }
+  @include ons{
+    .banner .banner-nav .nav .logo_watch{
+      width:148px;
+      height:56px;
+      margin-left: -74px;
+      background:url(../img/logo_watch_small.png) center center no-repeat;
+    }
+    .banner .banner-nav .nav .logo_airpods{
+      width:108px;
+      height:23px;
+      margin-left: -54px;
+      background:url(../img/logo_airpods_small.png) center center no-repeat;
+    }
+    .banner .banner-nav .nav .logo_event{
+      width:283px;
+      height:30px;
+      margin-left: -141.5px;
+      background:url(../img/logo_event_small.png) center center no-repeat;
+    }
+  }
+  $banner-list: ("iphone": #000,"event": #000,"airpods": #FFFFFF,"watch":#F3F3F3);
+  @each $i in map_keys($banner-list){
+    .banner .banner-nav .#{$i}{
+      background: map_get($banner-list,$i) url("../img/" + $i +"_large.jpg") center bottom no-repeat;
+      background-size:contain;
+      @include ons{
+        background: map_get($banner-list,$i) url("../img/" + $i +"_small.jpg") center bottom no-repeat;
+        background-size:contain;
+      }
+    }
+  }
+  .banner .banner-nav .event .event-close{
+    width:74px;
+    height:74px;
+    position:absolute;
+    top:54%;left:50%;
+    background:url(../img/play_button_large.png) center center no-repeat;
+    background-color:rgba(30,30,30,0.7);
+    border-radius: 37px;
+    margin-left:-37px;
+    margin-top:-37px;
+    transition:background-color .25s linear;
+  }
+  .banner .banner-nav .event .event-close:hover{
+    background-color: rgba(30,30,30,0.8);
+  }
+  //banner结束
+  //内容开始
+  .row{
+    overflow: hidden;
+  }
+  .col{
+    float:left;
+  }
+  @for $i from 1 through 12{
+    .d-#{$i}{
+      width:percentage($i/12);
+    }
+  }
+  @include onm {
+    @for $i from 1 through 12 {
+      .m-#{$i} {
+        width: percentage($i/12)
+      }
+    }
+  }
+  @include ons{
+    @for $i from 1 through 12 {
+      .s-#{$i} {
+        width: percentage($i/12)
+      }
+    }
+  }
+  .ads{
+    width:100%;
+    height:auto;
+    li{
+      height:200px;
+      box-sizing:border-box;
+      border: 2px solid #fff;
+      border-left:0;
+    }
+  }
+  $li-list:"ios","watchos","swift_playgrounds","music";
+  @each $i in $li-list{
+    .#{$i}{
+      background:url("../img/" + $i + "_large.jpg") center center no-repeat;
+      @include onm{
+        background:url("../img/" + $i + "_medium.jpg") center center no-repeat;
+      }
+      @include ons{
+        background:url("../img/" + $i + "_small.jpg") center center no-repeat;
+      }
+    }
+  }
+  .content{
+    width:100%;
+    height:auto;
+    .content-edu-list{
+      width:100%;
+      height:auto;
+      background:#F2F2F2;
+    }
+  }
+  .content .con-educate{
+    padding: 0 22px;
+    max-width:980px;
+    margin:0 auto;
+    height:auto;
+    text-align:justify;
+    .con-list{
+      float:left;
+      width:20%;
+      height:auto;
+      h4{
+        line-height:30px;
+        color:#000;
+        font-weight:600;
+        font-size:12px;
+      }
+      ul{
+        width:100%;
+        height:auto;
+        margin-bottom: 30px;
+        li{
+          width:100%;
+          height:auto;
+          cursor: default;
+          a{
+            width:100%;
+            line-height:20px;
+            display:block;
+            font-size:12px;
+            color:#666;
+            &:hover{
+              color:#333;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+  .content .con-small{
+    display:none;
+    margin-top:3px;
+    padding:20px;
+    width:100%;
+    //height:320px;
+    background:#F2F2F2;
+    box-sizing: border-box;
+    .small-list{
+      width:100%;
+      .small-edu{
+        position:relative;
+        width:100%;
+        height:39px;
+        border-bottom:1px solid #E3E3E3;
+        a{
+          display:block;
+          color:#333;
+          line-height:39px;
+          font-size:12px;
+          font-weight:600;
+          &:hover{
+            color:#000;
+          }
+        }
+        .small-add{
+          cursor:pointer;
+          position:absolute;
+          right:0;
+          top:0;
+          bottom:0;
+          margin:auto 0;
+          width:30px;
+          height:30px;
+          transform: rotate(0deg);
+          transition: transform .8s ease;
+          font-size:18px;
+          line-height: 30px;
+          text-align: center;
+          font-family:"微软雅黑";
+        }
+      }
+      .con-list{
+        position:static;
+        display:none;
+        width:100%;
+        height:auto;
+        li{
+          width:100%;
+          height:auto;
+          a{
+            width:100%;
+            line-height:30px;
+            display:block;
+            font-size:12px;
+            color:#666;
+            &:hover{
+              color:#333;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+  @include ons{
+    .content .con-educate{
+      display:none;
+    }
+    .content .con-small{
+      display:block;
+    }
+    .content .con-small .small-list .small-edu .small-add.active{
+      transform: rotate(45deg);
+    }
+  }
+  //内容结束
+
+
+  .bottom{
+    width:100%;
+    height:auto;
+    background:#f2f2f2;
+    .bottom-nav{
+      max-width:980px;
+      padding:0 22px;
+      height:auto;
+      margin:0 auto;
+      .bottom-apple{
+        width:100%;
+        font-size:12px;
+        color:#666;
+        line-height:24px;
+        border-bottom: 1px solid #e3e3e3;
+        a{
+          color:#0070c9;
+          &:hover{
+            color:#333;
+            text-decoration: underline;
+          }
+        }
+      }
+      .banner-inform{
+        width:100%;
+        height:26px;
+        .copy{
+          float:left;
+          padding:6px 0;
+          line-height:16px;
+          color:#666;
+          font-size:12px;
+          margin-right:26px;
+        }
+        .bottom-list{
+          float:left;
+          height:auto;
+          li{
+            float:left;
+            padding:6px 0;
+            color:#666;
+            font-size:12px;
+            a{
+              display: block;
+              padding:0 10px;
+              color:#333;
+              line-height:16px;
+              border-right:1px solid #d6d6d6;
+              &:hover{
+                text-decoration: underline;
+              }
+            }
+          }
+          &::after{
+            content:'';
+            height:0;
+            display: table;
+            clear:both;
+          }
+        }
+        &::after{
+          content:'';
+          display:table;
+          height:0;
+          clear:both;
+        }
+      }
+      p{
+        font-size:12px;
+        color:#666;
+        font-weight:normal;
+        lin-height:24px;
+        text-align: left;
+        padding-bottom:20px;
+        a{
+
+          color:#666;
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
